@@ -13,6 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class OrderResource extends Resource
 {
@@ -48,5 +50,28 @@ class OrderResource extends Resource
             'create' => CreateOrder::route('/create'),
             'edit' => EditOrder::route('/{record}/edit'),
         ];
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['product.code', 'customer.description'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        /** @var Order $record */
+
+        return [
+            'Cliente' => optional($record->customer)->description,
+            'Data' => $record->date,
+            'Stato' => $record->state,
+            'Prodotto' => optional($record->product)->code,
+        ];
+    }
+
+    /** @return Builder<Order> */
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->with(['customer', 'product']);
     }
 }
