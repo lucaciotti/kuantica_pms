@@ -92,25 +92,25 @@ class AppServiceProvider extends ServiceProvider
 
         Notifications::alignment(Alignment::Center);
 
-        // UserForm::register([
-        //     Select::make('department_id')
-        //         ->label('Reparto di Riferimento')
-        //         ->relationship('department', 'name')
-        //         ->columnSpan(2)
-        //         ->searchable()
-        //         ->preload()
-        //         ->required()
-        //         ->createOptionForm([
-        //             TextInput::make('name')
-        //                 ->label('Nome Reparto')
-        //                 ->required()
-        //                 ->maxLength(255)
-        //         ]),
-        // ]);
-        // UsersTable::register([
-        //     TextColumn::make('department.name')->label('Reparto')
-        //         ->searchable(),
-        // ]);
+        UserForm::register([
+            Select::make('department_id')
+                ->label('Reparto di Riferimento')
+                ->relationship('department', 'name')
+                ->columnSpan(2)
+                ->searchable()
+                ->preload()
+                ->required()
+                ->createOptionForm([
+                    TextInput::make('name')
+                        ->label('Nome Reparto')
+                        ->required()
+                        ->maxLength(255)
+                ]),
+        ]);
+        UsersTable::register([
+            TextColumn::make('department.name')->label('Reparto')
+                ->searchable(),
+        ]);
         // UserFilters::register([
         //     \Filament\Tables\Filters\SelectFilter::make('something')
         // ]);

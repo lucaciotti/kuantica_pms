@@ -52,9 +52,9 @@ class User extends Authenticatable implements FilamentUser, Commenter
 
     public function canAccessPanel(Panel $panel): bool
     {
-        if ($panel->getId() === 'config' || $panel->getId() === 'admin') {
-            return $this->hasRole('admin') ||  $this->hasRole('super_admin');
-        }
+        // if ($panel->getId() === 'config' || $panel->getId() === 'admin') {
+        //     return $this->hasRole('admin') ||  $this->hasRole('super_admin');
+        // }
 
         return true;
     }

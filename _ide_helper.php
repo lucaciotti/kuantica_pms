@@ -26889,6 +26889,99 @@ namespace Boquizo\FilamentLogViewer\Pages {
             }
     }
 
+namespace App\Filament\Config\Resources\Customers\Pages {
+    /**
+     */
+    class CreateCustomer extends \Filament\Resources\Pages\CreateRecord {
+            }
+    /**
+     */
+    class EditCustomer extends \Filament\Resources\Pages\EditRecord {
+            }
+    /**
+     */
+    class ListCustomers extends \Filament\Resources\Pages\ListRecords {
+            }
+    }
+
+namespace Filament\Resources\Pages {
+    /**
+     * @template TModel of Model = Model
+     * @property-read Schema $form
+     */
+    class CreateRecord extends \Filament\Resources\Pages\Page {
+            }
+    /**
+     */
+    class Page extends \Filament\Pages\Page {
+            }
+    /**
+     * @template TModel of Model = Model
+     * @property-read Schema $form
+     */
+    class EditRecord extends \Filament\Resources\Pages\Page {
+            }
+    /**
+     */
+    class ListRecords extends \Filament\Resources\Pages\Page {
+            }
+    /**
+     */
+    class ManageRecords extends \Filament\Resources\Pages\ListRecords {
+            }
+    /**
+     * @template TModel of Model = Model
+     * @property-read Schema $form
+     */
+    class ViewRecord extends \Filament\Resources\Pages\Page {
+            }
+    }
+
+namespace App\Filament\Config\Resources\Departments\Pages {
+    /**
+     */
+    class CreateDepartment extends \Filament\Resources\Pages\CreateRecord {
+            }
+    /**
+     */
+    class EditDepartment extends \Filament\Resources\Pages\EditRecord {
+            }
+    /**
+     */
+    class ListDepartments extends \Filament\Resources\Pages\ListRecords {
+            }
+    }
+
+namespace App\Filament\Config\Resources\ProductRanges\Pages {
+    /**
+     */
+    class CreateProductRange extends \Filament\Resources\Pages\CreateRecord {
+            }
+    /**
+     */
+    class EditProductRange extends \Filament\Resources\Pages\EditRecord {
+            }
+    /**
+     */
+    class ListProductRanges extends \Filament\Resources\Pages\ListRecords {
+            }
+    }
+
+namespace App\Filament\Config\Resources\Products\Pages {
+    /**
+     */
+    class CreateProduct extends \Filament\Resources\Pages\CreateRecord {
+            }
+    /**
+     */
+    class EditProduct extends \Filament\Resources\Pages\EditRecord {
+            }
+    /**
+     */
+    class ListProducts extends \Filament\Resources\Pages\ListRecords {
+            }
+    }
+
 namespace Livewire\Features\SupportTesting {
     /**
      * @template TComponent of \Livewire\Component
@@ -29581,39 +29674,6 @@ namespace TomatoPHP\FilamentUsers\Filament\Resources\Users\Pages {
     /**
      */
     class ManageUsers extends \Filament\Resources\Pages\ManageRecords {
-            }
-    }
-
-namespace Filament\Resources\Pages {
-    /**
-     */
-    class ManageRecords extends \Filament\Resources\Pages\ListRecords {
-            }
-    /**
-     */
-    class ListRecords extends \Filament\Resources\Pages\Page {
-            }
-    /**
-     */
-    class Page extends \Filament\Pages\Page {
-            }
-    /**
-     * @template TModel of Model = Model
-     * @property-read Schema $form
-     */
-    class CreateRecord extends \Filament\Resources\Pages\Page {
-            }
-    /**
-     * @template TModel of Model = Model
-     * @property-read Schema $form
-     */
-    class ViewRecord extends \Filament\Resources\Pages\Page {
-            }
-    /**
-     * @template TModel of Model = Model
-     * @property-read Schema $form
-     */
-    class EditRecord extends \Filament\Resources\Pages\Page {
             }
     }
 
