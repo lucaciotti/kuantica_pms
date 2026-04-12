@@ -1,13 +1,89 @@
 @import '../../../../vendor/filament/filament/resources/css/theme.css';
-/* @import '../../../../vendor/ymsoft/filament-table-presets/resources/css/styles.css'; */
 
 @source '../../../../app/Filament/**/*';
 @source '../../../../resources/views/filament/**/*';
+
 @source '../../../../vendor/bezhansalleh/filament-panel-switch/resources/views/**/*.blade.php';
+
+.row-group-lvl-1 {
+    background-color: var(--color-gray-400);
+    font-weight: var(--font-weight-bold);
+    --spacing: .18rem;
+}
+
+.row-group-lvl-2 {
+    background-color: var(--color-gray-300);
+    font-weight: var(--font-weight-semibold);
+    --spacing: .18rem;
+}
+
+.row-group-lvl-3 {
+    background-color: var(--color-gray-200);
+    font-weight: var(--font-weight-semibold);
+    --spacing: .18rem;
+}
+
+.row-group-lvl-4 {
+    background-color: var(--color-gray-100);
+    font-weight: var(--font-weight-semibold);
+    --spacing: .18rem;
+}
+
+.row-group-lvl-5 {
+    background-color: var(--gray-50);
+    font-weight: var(--font-weight-semibold);
+    --spacing: .18rem;
+}
+
+.row-group-lvl-99 {
+    --spacing: .18rem;
+}
+
+/* .fi-ta-cell,
+.fi-input,
+.fi-select-input,
+.fi-ta-cell div {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    border-radius: 0% !important;
+}
+
+.flex {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    gap: 3px !important;
+
+}
+
+.fi-tabs {
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
+}
+
+.fi-header-heading {
+    font-size: 1.5rem !important;
+} */
 
 :root {
     --radius-3xl: 1rem;
+    /* zoom: 0.8; */
 }
+
+.fi-main {
+    zoom: 0.9;
+}
+
+@media only screen and (min-width: 1024px) {
+    .fi-sidebar {
+        zoom: 0.9;
+    }
+}
+
+/* .fi-topbar {
+    --spacing: 0.2rem;
+} */
 
 .fi-ta-header-ctn {
     --spacing: 0.18rem;
@@ -24,9 +100,11 @@
 .fi-ta-text {
     --spacing: 0.18rem;
 }
+
 .fi-ta-toggle {
     --spacing: 0.18rem;
 }
+
 .fi-ta-selection-cell {
     --spacing: 0.20rem;
 }
@@ -90,4 +168,13 @@
 
 .fi-icon {
     --spacing: 0.25rem;
+}
+
+.fi-ta-cell,
+/* .fi-input, */
+/* .fi-select-input, */
+/* .fi-ta-toogle, */
+.fi-ta-cell div {
+    /* padding-top: calc(var(--spacing)*2) !important; */
+    padding-bottom: calc(var(--spacing)*2) !important;
 }

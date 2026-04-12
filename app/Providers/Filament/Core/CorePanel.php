@@ -53,7 +53,7 @@ class CorePanel extends Panel
             // ->registration()
             ->passwordReset()
             ->colors([
-                'primary' => Color::Teal,
+                'primary' => Color::Purple,
             ])
             ->maxContentWidth(Width::Full)
             // ->subNavigationPosition(SubNavigationPosition::Top)

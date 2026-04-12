@@ -26878,6 +26878,17 @@ namespace Filament\Pages {
             }
     }
 
+namespace Boquizo\FilamentLogViewer\Pages {
+    /**
+     */
+    class ListLogs extends \Filament\Pages\Page {
+            }
+    /**
+     */
+    class ViewLog extends \Filament\Pages\Page {
+            }
+    }
+
 namespace Livewire\Features\SupportTesting {
     /**
      * @template TComponent of \Livewire\Component
@@ -29566,6 +29577,65 @@ namespace Filament\Auth\Pages\PasswordReset {
             }
     }
 
+namespace TomatoPHP\FilamentUsers\Filament\Resources\Users\Pages {
+    /**
+     */
+    class ManageUsers extends \Filament\Resources\Pages\ManageRecords {
+            }
+    }
+
+namespace Filament\Resources\Pages {
+    /**
+     */
+    class ManageRecords extends \Filament\Resources\Pages\ListRecords {
+            }
+    /**
+     */
+    class ListRecords extends \Filament\Resources\Pages\Page {
+            }
+    /**
+     */
+    class Page extends \Filament\Pages\Page {
+            }
+    /**
+     * @template TModel of Model = Model
+     * @property-read Schema $form
+     */
+    class CreateRecord extends \Filament\Resources\Pages\Page {
+            }
+    /**
+     * @template TModel of Model = Model
+     * @property-read Schema $form
+     */
+    class ViewRecord extends \Filament\Resources\Pages\Page {
+            }
+    /**
+     * @template TModel of Model = Model
+     * @property-read Schema $form
+     */
+    class EditRecord extends \Filament\Resources\Pages\Page {
+            }
+    }
+
+namespace BezhanSalleh\FilamentShield\Resources\Roles\Pages {
+    /**
+     */
+    class ListRoles extends \Filament\Resources\Pages\ListRecords {
+            }
+    /**
+     */
+    class CreateRole extends \Filament\Resources\Pages\CreateRecord {
+            }
+    /**
+     */
+    class ViewRole extends \Filament\Resources\Pages\ViewRecord {
+            }
+    /**
+     */
+    class EditRole extends \Filament\Resources\Pages\EditRecord {
+            }
+    }
+
 namespace Illuminate\View {
     /**
      */
@@ -29718,6 +29788,20 @@ namespace Illuminate\View {
             return \Illuminate\View\View::response($callback);
         }
 
+            }
+    }
+
+namespace Filament\Livewire {
+    /**
+     */
+    class Notifications extends \Filament\Notifications\Livewire\Notifications {
+            }
+    }
+
+namespace Filament\Notifications\Livewire {
+    /**
+     */
+    class Notifications extends \Livewire\Component {
             }
     }
 
