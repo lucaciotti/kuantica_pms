@@ -39,6 +39,7 @@ class ImportOrders implements ShouldQueue
         $this->importedfile->save();
         Excel::import(new OrdersImport($this->importedfile->id), storage_path('app/private/' . $this->importedfile->path));
         $this->importedfile->status = 'Processato';
+        $this->importedfile->save();
         // ProcessTempTasks::dispatch($this->importedfile->id, $this->hasWarnings)->onQueue('tasks');
     }
 

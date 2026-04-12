@@ -48,6 +48,7 @@ class OrdersImport implements ToCollection, WithStartRow, SkipsEmptyRows, WithCa
 
             $order_data['type_production'] = (string)$row[3];
             $order_data['qty'] = (float)$row[4];
+            $order_data['qty_res'] = $order_data['qty'];
             $order_data['batch_code'] = (float)$row[5];
             $order_data['date'] = is_numeric($row[6]) ? Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[6])) : null;
             $order_data['note'] = (string)$row[7];
@@ -90,6 +91,7 @@ class OrdersImport implements ToCollection, WithStartRow, SkipsEmptyRows, WithCa
 
             Order::updateOrCreate($order_wheredata, $order_data);
         }
+        
     }
 
     public function onError(\Throwable $th)

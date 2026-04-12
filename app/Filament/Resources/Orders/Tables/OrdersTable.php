@@ -14,31 +14,37 @@ class OrdersTable
     {
         return $table
             ->columns([
-                TextColumn::make('state')
+                TextColumn::make('state')->label('Stato')
+                    ->badge()
+                    ->sortable()
                     ->searchable(),
-                TextColumn::make('date')
-                    ->date()
+                TextColumn::make('date')->label('Data Produzione')
+                    ->date('d/m/Y')
                     ->sortable(),
-                TextColumn::make('qty')
+                TextColumn::make('type_production')->label('Tipo')
+                ->sortable()
+                    ->searchable(),
+                TextColumn::make('product.code')->label('Codice Prodotto')
+                ->sortable()
+                    ->searchable(),
+                TextColumn::make('department.name')->label('Reparto')
+                ->searchable()
+                    ->sortable(),
+                TextColumn::make('customer.description')->label('Codice Cliente')
+                ->sortable()
+                    ->searchable(),
+            TextColumn::make('batch_code')->label('Lotto')
+                ->sortable()
+                ->searchable(),
+                TextColumn::make('qty')->label('Qta')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('qty_end')
+                // TextColumn::make('qty_end')->label('Qta Finale')
+                //     ->numeric()
+                //     ->sortable(),
+                TextColumn::make('qty_res')->label('Qta Residua')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('qty_res')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('batch_code')
-                    ->searchable(),
-                TextColumn::make('type_production')
-                    ->searchable(),
-                TextColumn::make('product.id')
-                    ->searchable(),
-                TextColumn::make('department_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('customer.id')
-                    ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

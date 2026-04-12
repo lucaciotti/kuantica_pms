@@ -15,7 +15,7 @@ class Order extends Model
     protected function casts(): array
     {
         return [
-            'status' => OrderStatus::class,
+            'state' => OrderStatus::class,
         ];
     }
 
@@ -28,5 +28,10 @@ class Order extends Model
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class);
     }
 }

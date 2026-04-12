@@ -2,7 +2,11 @@
 
 namespace App\Enums;
 
-enum OrderStatus: string
+use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasLabel;
+use Illuminate\Contracts\Support\Htmlable;
+
+enum OrderStatus: string implements HasLabel, HasColor
 {
     case QUEUE = 'queue';
     case PROCESSING = 'processing';
@@ -11,9 +15,9 @@ enum OrderStatus: string
     case CANCELLED = 'cancelled';
     case PAUSED = 'paused';
     case WARNING = 'warning';
-    case PARTIALED = 'partialed';
+    case PARTIALED = 'partial-end';
 
-    public function label(): string
+    public function label(): string | Htmlable | null
     {
         return match ($this) {
             self::QUEUE => 'In coda',
@@ -41,27 +45,15 @@ enum OrderStatus: string
         };
     }
 
-    // public function getLabel(): string
-    // {
-    //     return match ($this) {
-    //         self::NUM => 'Numerico',
-    //         self::STRING => 'Alfanumerico',
-    //         self::BOOL => 'Logico',
-    //         self::DATE => 'Data',
-    //         self::NOTE => 'Note',
-    //     };
-    // }
+    public function getLabel(): string
+    {
+        return $this->label();
+    }
 
-    // public function getColor(): string
-    // {
-    //     return match ($this) {
-    //         self::NUM => 'info',
-    //         self::STRING => 'success',
-    //         self::BOOL => 'primary',
-    //         self::DATE => 'warning',
-    //         self::NOTE => 'danger',
-    //     };
-    // }
+    public function getColor(): string
+    {
+        return $this->color();
+    }
 
     public static function labels(): array
     {
