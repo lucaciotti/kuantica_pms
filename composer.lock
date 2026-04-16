@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ea0e59e773ea415df54dac836757fa68",
+    "content-hash": "4e3f4462c32d77b8668a626f6cfa43f7",
     "packages": [
         {
             "name": "asmit/resized-column",
@@ -4555,6 +4555,76 @@
             "time": "2026-04-02T20:48:35+00:00"
         },
         {
+            "name": "lucaciotti/filament-infinite-scroll",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lucaciotti/filament-infinite-scroll.git",
+                "reference": "787866646f72188e1cfb49b1183025cb78bb117d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lucaciotti/filament-infinite-scroll/zipball/787866646f72188e1cfb49b1183025cb78bb117d",
+                "reference": "787866646f72188e1cfb49b1183025cb78bb117d",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.2.118|^4.0|^5.0",
+                "illuminate/contracts": "^10.45|^11.0|^12.0|^13.0",
+                "php": "^8.2|^8.3",
+                "spatie/eloquent-sortable": "^5.0",
+                "spatie/laravel-package-tools": "^1.13.5"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.0|^8.1",
+                "orchestra/testbench": "^8.0|^9.0|^10.0|^11.0",
+                "phpunit/phpunit": "^10.0|^11.5.3",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Fibtegis\\FilamentInfiniteScroll\\FilamentInfiniteScrollServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Fibtegis\\FilamentInfiniteScroll\\": "src"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": []
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "İsmail KÖSE",
+                    "email": "ismail@fbt.gs",
+                    "role": "Founder"
+                }
+            ],
+            "description": "Seamless infinite scrolling plugin that replaces pagination in Filament Tables.",
+            "homepage": "https://github.com/fibtegis/filament-infinite-scroll",
+            "keywords": [
+                "fibtegis",
+                "filament",
+                "infinite-scroll",
+                "lazy-loading",
+                "pagination",
+                "tables"
+            ],
+            "support": {
+                "source": "https://github.com/lucaciotti/filament-infinite-scroll/tree/main"
+            },
+            "time": "2026-04-15T20:21:06+00:00"
+        },
+        {
             "name": "maatwebsite/excel",
             "version": "3.1.68",
             "source": {
@@ -7074,6 +7144,80 @@
                 }
             ],
             "time": "2022-12-17T21:53:22+00:00"
+        },
+        {
+            "name": "spatie/eloquent-sortable",
+            "version": "5.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/eloquent-sortable.git",
+                "reference": "caf2596e5df0260d0e2863e89b750611eef2fc59"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/eloquent-sortable/zipball/caf2596e5df0260d0e2863e89b750611eef2fc59",
+                "reference": "caf2596e5df0260d0e2863e89b750611eef2fc59",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^10.0|^11.0|^12.0|^13.0",
+                "illuminate/support": "^10.0|^11.0|^12.0|^13.0",
+                "nesbot/carbon": "^2.63|^3.0",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.9"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^8.0|^9.6|^10.0|^11.0",
+                "phpunit/phpunit": "^10.0|^11.5.3|^12.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\EloquentSortable\\EloquentSortableServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\EloquentSortable\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be"
+                }
+            ],
+            "description": "Sortable behaviour for eloquent models",
+            "homepage": "https://github.com/spatie/eloquent-sortable",
+            "keywords": [
+                "behaviour",
+                "eloquent",
+                "laravel",
+                "model",
+                "sort",
+                "sortable"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/eloquent-sortable/issues",
+                "source": "https://github.com/spatie/eloquent-sortable/tree/5.0.1"
+            },
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-02-21T21:26:43+00:00"
         },
         {
             "name": "spatie/invade",
@@ -14456,8 +14600,10 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": {},
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "lucaciotti/filament-infinite-scroll": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

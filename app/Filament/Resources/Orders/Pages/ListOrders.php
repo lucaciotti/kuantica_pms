@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Orders\Pages;
 
 use App\Enums\OrderStatus;
 use App\Filament\Resources\Orders\OrderResource;
+use Fibtegis\FilamentInfiniteScroll\Concerns\InteractsWithInfiniteScroll;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -12,6 +13,8 @@ use Illuminate\Support\Str;
 
 class ListOrders extends ListRecords
 {
+    // use InteractsWithInfiniteScroll;
+
     protected static string $resource = OrderResource::class;
 
     protected function getHeaderActions(): array

@@ -24,13 +24,13 @@ class OrderForm
             ->components([
                 Select::make('state')->label('Stato')
                     ->options(OrderStatus::class),
-                DatePicker::make('date')->label('Data Produzione'),
-                TextInput::make('type_production')->label('Tipo'),
+                DatePicker::make('date')->label('Data Consegna'),
+                TextInput::make('type_production')->label('Magazzino'),
                 Select::make('customer_id')
                     ->searchable()
                     ->preload()
                     ->relationship('customer', 'description'),
-                Select::make('product_id')
+                Select::make('product_id')->label('Codice Prodotto')
                     ->searchable()
                     ->preload()
                     ->relationship('product', 'code'),
@@ -62,7 +62,7 @@ class OrderForm
                         ->icon('heroicon-m-clock')
                         ->color('danger')
                         ->requiresConfirmation()
-                        ->disabled(fn(Get $get) => $get('state') == OrderStatus::QUEUE || $get('state') == OrderStatus::PARTIALED || $get('state')->isFinalized())
+                        ->disabled(fn(Get $get) => $get('state') == OrderStatus::QUEUE || $get('state') == OrderStatus::PARTIALED || $get('state')?->isFinalized())
                         ->schema([
                             TextInput::make('quantity')->label('Quantità')
                                 ->required()
