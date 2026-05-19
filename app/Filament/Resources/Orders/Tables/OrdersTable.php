@@ -2,12 +2,15 @@
 
 namespace App\Filament\Resources\Orders\Tables;
 
+use App\Models\User;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
+use Kirschbaum\Commentions\Filament\Actions\CommentsAction;
+use Kirschbaum\Commentions\Filament\Actions\CommentsTableAction;
 
 class OrdersTable
 {
@@ -72,6 +75,8 @@ class OrdersTable
             ])
             ->recordActions([
                 EditAction::make(),
+                CommentsAction::make()
+                    ->mentionables(User::all())
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Orders\Pages;
 use App\Filament\Resources\Orders\OrderResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
+use Kirschbaum\Commentions\Filament\Actions\CommentsAction;
+use Kirschbaum\Commentions\Filament\Actions\SubscriptionAction;
 
 class EditOrder extends EditRecord
 {
@@ -13,7 +15,9 @@ class EditOrder extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            CommentsAction::make(),
+            SubscriptionAction::make(),
+            // DeleteAction::make(),
         ];
     }
 }
