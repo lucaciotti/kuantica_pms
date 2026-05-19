@@ -2,18 +2,23 @@
 
 namespace App\Filament\Resources\Orders\Tables;
 
+use App\Enums\OrderStatus;
 use Auth;
 use App\Models\User;
+use Filament\Actions\Action;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Enums\RecordActionsPosition;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Kirschbaum\Commentions\Filament\Actions\CommentsAction;
 use Kirschbaum\Commentions\Filament\Actions\CommentsTableAction;
+use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class OrdersTable
 {
@@ -79,9 +84,29 @@ class OrdersTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([                
+                SelectFilter::make('state')->label('Stato')
+                ->options(OrderStatus::class)
+                ->searchable(),
+                DateRangeFilter::make('date')->label('Data Consegna'),
+                SelectFilter::make('customer')->label('Clienti')
+                    ->relationship('customer', 'description')
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('department_id')->label('Reparto')
+                    ->relationship('department', 'name')
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('product')->label('Prodotto')
+                    ->relationship('product', 'code')
+                    ->searchable()
+                    ->preload(),
+            ], layout: FiltersLayout::Modal)->filtersTriggerAction(
+                fn(Action $action) => $action
+                    ->button()
+                    ->slideOver()
+                    ->label(__('Filter')),
+            )->deferFilters(false)
             ->recordActions([
                 CommentsAction::make()->hiddenLabel(true)->tooltip('Commenti')
                     ->mentionables(User::all()),

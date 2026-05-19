@@ -74,6 +74,9 @@
 .fi-main {
     zoom: 0.9;
 }
+.fi-modal-window {
+    zoom: 1;
+}
 
 @media only screen and (min-width: 1024px) {
     .fi-sidebar {
