@@ -10,12 +10,12 @@ enum OrderStatus: string implements HasLabel, HasColor
 {
     case QUEUE = 'queue';
     case PROCESSING = 'processing';
-    case ENDED = 'ended';
-    case SOSPENDED = 'sospended';
-    case CANCELLED = 'cancelled';
     case PAUSED = 'paused';
-    case WARNING = 'warning';
+    case SOSPENDED = 'sospended';
     case PARTIALED = 'partial-end';
+    case ENDED = 'ended';
+    case CANCELLED = 'cancelled';
+    // case WARNING = 'warning';
 
     public function label(): string | Htmlable | null
     {
@@ -26,7 +26,7 @@ enum OrderStatus: string implements HasLabel, HasColor
             self::SOSPENDED => 'Sospeso',
             self::CANCELLED => 'Cancellato',
             self::PAUSED => 'In Pausa',
-            self::WARNING => 'Attenzione!',
+            // self::WARNING => 'Attenzione!',
             self::PARTIALED => 'Parziale',
         };
     }
@@ -40,7 +40,7 @@ enum OrderStatus: string implements HasLabel, HasColor
             self::SOSPENDED => 'teal',
             self::CANCELLED => 'danger',
             self::PAUSED => 'warning',
-            self::WARNING => 'warning',
+            // self::WARNING => 'warning',
             self::PARTIALED => 'info',
         };
     }

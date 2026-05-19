@@ -6,6 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 
 class OrdersTable
@@ -13,6 +14,17 @@ class OrdersTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->groups([
+                Group::make('state')->label('Stato')
+                    ->collapsible(),
+                Group::make('department.name')->label('Reparto')
+                    ->collapsible(),
+                Group::make('date')->label('Data Consegna')
+                    ->collapsible(),
+            ])
+            ->defaultGroup('state')
+            // ->collapsedGroupsByDefault()
+            // ->groupingSettingsInDropdownOnDesktop()
             ->columns([
                 TextColumn::make('state')->label('Stato')
                     ->badge()
@@ -28,10 +40,10 @@ class OrdersTable
                 TextColumn::make('type_production')->label('Magazzino')
                 ->sortable()
                     ->searchable(),
-                TextColumn::make('product.code')->label('Codice Prodotto')
+                TextColumn::make('customer.description')->label('Codice Cliente')
                 ->sortable()
                     ->searchable(),
-                TextColumn::make('customer.description')->label('Codice Cliente')
+                TextColumn::make('product.code')->label('Codice Prodotto')
                 ->sortable()
                     ->searchable(),
             TextColumn::make('batch_code')->label('Lotto')

@@ -107,6 +107,12 @@
 
 .fi-ta-selection-cell {
     --spacing: 0.20rem;
+    padding-top: 0.5rem;
+}
+
+.fi-ta-group-selection-cell {
+    --spacing: 0.20rem;
+    padding-top: 0.2rem;
 }
 
 .fi-ta-header-cell {

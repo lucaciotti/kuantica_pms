@@ -123,3 +123,9 @@ sail artisan make:filament-relation-manager TempTaskResource tempTaskRows
 
 # page ManageRelatedRecords
 sail artisan make:filament-page ManageTaskImportFileTempTask --resource=TaskImportFileResource --type=ManageRelatedRecords
+
+
+
+php artisan make:filament-page OrderDepartmentList --resource=OrderResource --type=custom
+
+https://laracasts.com/discuss/channels/filament/filament-custom-list-page

@@ -23,6 +23,7 @@
         "maatwebsite/excel": "^3.1",
         "malzariey/filament-daterangepicker-filter": "^5.0",
         "owen-it/laravel-auditing": "^14.0",
+        "relaticle/comments": "^1.0",
         "tomatophp/filament-users": "^5.0",
         "watheqalshowaiter/filament-sticky-table-header": "^1.5"
     },
