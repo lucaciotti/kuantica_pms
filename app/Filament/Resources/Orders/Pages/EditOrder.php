@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\Orders\Pages;
 
 use App\Filament\Resources\Orders\OrderResource;
+use Auth;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Kirschbaum\Commentions\Filament\Actions\CommentsAction;
@@ -19,5 +21,20 @@ class EditOrder extends EditRecord
             SubscriptionAction::make(),
             // DeleteAction::make(),
         ];
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->previousUrl ?? $this->getResource()::getUrl('index');
+    }
+
+    protected function getFormActions(): array
+    {
+        if (Auth::user()->hasRole('user')) {
+            return [
+                parent::getCancelFormAction(),
+            ];
+        }
+        return parent::getFormActions();
     }
 }

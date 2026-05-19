@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Orders\Pages;
 use App\Enums\OrderStatus;
 use App\Filament\Resources\Orders\OrderResource;
 use App\Models\Department;
+use Auth;
 use Fibtegis\FilamentInfiniteScroll\Concerns\InteractsWithInfiniteScroll;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
@@ -29,6 +30,15 @@ class ListOrders extends ListRecords
     {
         $tabs = [];
 
+        if (Auth::user()->hasRole('user')) {
+            $tabs['Tutti'] = Tab::make();
+            // Generate Tabs from Enum Cases
+            foreach (OrderStatus::cases() as $status) {
+                $tabs[Str::slug($status->value)] = Tab::make($status->getLabel())
+                    ->modifyQueryUsing(fn(Builder $query) => $query->where('state', $status));
+            }
+            return $tabs;
+        }
         // 'All' Tab
         $tabs['all'] = Tab::make('Tutti reparti');
 

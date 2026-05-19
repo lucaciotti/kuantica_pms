@@ -4,6 +4,8 @@ namespace App\Filament\Resources\Orders\Schemas;
 
 use App\Enums\OrderStatus;
 use App\Models\Order;
+use App\Models\User;
+use Auth;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -20,7 +22,7 @@ class OrderForm
 {
     public static function configure(Schema $schema): Schema
     {
-        return $schema
+        $form = $schema
             ->components([
                 Select::make('state')->label('Stato')
                     ->options(OrderStatus::class),
@@ -49,27 +51,52 @@ class OrderForm
                     ->columnSpanFull(),
                 Actions::make([
                     Action::make('Inizio Lavorazione')
+                        ->label(fn(Get $get) => $get('state') == OrderStatus::SOSPENDED ? 'Riprendi Lavorazione' : 'Inizio Lavorazione')
                         ->icon('heroicon-m-clock')
                         ->color('success')
                         ->requiresConfirmation()
-                        ->disabled(fn(Get $get) => $get('state') != OrderStatus::QUEUE && $get('state') != OrderStatus::PARTIALED)
-                        ->action(function (Set $set, Get $get , Order $record) {
+                        ->hidden(fn(Get $get) => $get('state') != OrderStatus::QUEUE && $get('state') != OrderStatus::PARTIALED && $get('state') != OrderStatus::SOSPENDED)
+                        ->action(function (Set $set, Get $get, Order $record) {
                             $record->state = OrderStatus::PROCESSING;
+                            $record->comment('ORDINE In Lavorazione', Auth::user());
+                            $record->save();
+                            return redirect(request()->header('Referer'));
+                        }),
+                    Action::make('Sospendi Lavorazione')
+                        ->icon('heroicon-m-x-circle')
+                        ->color('warning')
+                        ->requiresConfirmation()
+                        ->visible(fn(Get $get) => $get('state') != OrderStatus::QUEUE && $get('state') != OrderStatus::PARTIALED && $get('state') != OrderStatus::SOSPENDED)
+                        ->schema([
+                            Textarea::make('motivo')->label('Motivazione')->required(),
+                        ])
+                        ->action(function (array $data, Set $set, Get $get, Order $record) {
+                            if (!empty($data['motivo'])) {
+                                $admins = User::whereHas('roles', function ($query) {
+                                    $query->where('name', 'admin')->orWhere('name', 'super_admin');
+                                })->get();
+                                foreach ($admins as $admin) {
+                                    $record->subscribe($admin);
+                                }
+                                $record->comment('ORDINE SOSPESO: ' . $data['motivo'], Auth::user());
+                            }
+                            $record->state = OrderStatus::SOSPENDED;
                             $record->save();
                             return redirect(request()->header('Referer'));
                         }),
                     Action::make('Fine Lavorazione')
-                        ->icon('heroicon-m-clock')
+                        ->icon('heroicon-m-check')
                         ->color('danger')
                         ->requiresConfirmation()
-                        ->disabled(fn(Get $get) => $get('state') == OrderStatus::QUEUE || $get('state') == OrderStatus::PARTIALED || $get('state')?->isFinalized())
+                        ->hidden(fn(Get $get) => $get('state') == OrderStatus::QUEUE || $get('state') == OrderStatus::PARTIALED || $get('state')?->isFinalized() || $get('state') == OrderStatus::SOSPENDED)
                         ->schema([
                             TextInput::make('quantity')->label('Quantità')
                                 ->required()
                                 ->numeric(),
                         ])
                         ->action(function (array $data, Set $set, Get $get, Order $record, EditRecord $livewire, $action) {
-                            if ($data['quantity'] > $get('qty_res')){
+                            $qtaRes = $get('qty_res') ? $get('qty_res') : $get('qty');
+                            if ($data['quantity'] > $qtaRes) {
                                 Notification::make()
                                     ->danger()
                                     ->title('ATTENZIONE!')
@@ -79,21 +106,33 @@ class OrderForm
                                 // 2. Abort the action
                                 $action->cancel();
                             }
-                            if ($data['quantity']< $get('qty_res')){
+                            if ($data['quantity'] < $qtaRes) {
                                 $record->state = OrderStatus::PARTIALED;
+                                $record->comment('ORDINE Lavorazione Paziale', Auth::user());
                                 $record->qty_end = $data['quantity'];
-                                $record->qty_res = $record->qty_res - $data['quantity'];
+                                $record->qty_res = $qtaRes - $data['quantity'];
                                 $record->save();
                                 return redirect(request()->header('Referer'));
                             } else {
                                 $record->state = OrderStatus::ENDED;
+                                $record->comment('ORDINE Lavorazione Finita', Auth::user());
                                 $record->qty_end = $data['quantity'];
-                                $record->qty_res = $record->qty_res - $data['quantity'];
+                                $record->qty_res = $qtaRes - $data['quantity'];
                                 $record->save();
                                 return redirect(request()->header('Referer'));
                             }
                         }),
                 ])->columnSpan(2)->fullWidth(),
             ]);
+
+        if (Auth::user() && !Auth::user()->hasRole('admin') && !Auth::user()->hasRole('super_admin')) {
+            foreach ($form->getComponents() as $childComponent) {
+                // if ($childComponent->getName() !== 'note') {
+                    $childComponent->disabled();
+                // }
+            }
+        }
+
+        return $form;
     }
 }

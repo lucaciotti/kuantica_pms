@@ -2,6 +2,7 @@
 
 namespace App\Enums;
 
+use Filament\Support\Colors\Color;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Contracts\Support\Htmlable;
@@ -36,12 +37,12 @@ enum OrderStatus: string implements HasLabel, HasColor
         return match ($this) {
             self::QUEUE => 'primary',
             self::PROCESSING => 'success',
-            self::ENDED => 'grey',
-            self::SOSPENDED => 'teal',
+            self::ENDED => 'info',
+            self::SOSPENDED => 'warning',
             self::CANCELLED => 'danger',
             self::PAUSED => 'warning',
             // self::WARNING => 'warning',
-            self::PARTIALED => 'info',
+            self::PARTIALED => 'primary',
         };
     }
 

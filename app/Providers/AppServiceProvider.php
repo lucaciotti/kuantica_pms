@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Auth;
 use BezhanSalleh\PanelSwitch\PanelSwitch;
 use Carbon\CarbonImmutable;
 use Filament\Actions\Action;
@@ -58,7 +59,12 @@ class AppServiceProvider extends ServiceProvider
                     'config' => __('Configurazioni'),
                     'admin' => 'App Maintenance',
                 ]);
-            $panelSwitch->panels(['main', 'config', 'admin']);
+            if (Auth::user() && !Auth::user()->hasRole('admin') && !Auth::user()->hasRole('super_admin')) {
+                $panelSwitch->panels(['main']);
+            } else {
+                $panelSwitch->panels(['main', 'config', 'admin']);
+            }
+            // $panelSwitch->panels(['main', 'config', 'admin']);
             $panelSwitch->icons([
                 'main' => 'heroicon-o-home',
                 'config' => 'heroicon-o-cog-6-tooth',

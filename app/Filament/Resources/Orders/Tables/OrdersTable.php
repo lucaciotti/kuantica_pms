@@ -2,11 +2,14 @@
 
 namespace App\Filament\Resources\Orders\Tables;
 
+use Auth;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\RecordActionsPosition;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Kirschbaum\Commentions\Filament\Actions\CommentsAction;
@@ -16,6 +19,11 @@ class OrdersTable
 {
     public static function configure(Table $table): Table
     {
+        if (Auth::user()->hasRole('user')) {
+            if (Auth::user()->department_id){
+                $table->modifyQueryUsing(fn(Builder $query) => $query->where('department_id', Auth::user()->department_id));
+            }
+        }
         return $table
             ->groups([
                 Group::make('state')->label('Stato')
@@ -32,6 +40,7 @@ class OrdersTable
                 TextColumn::make('state')->label('Stato')
                     ->badge()
                     ->sortable()
+                    ->alignCenter()
                     ->searchable(),
                 TextColumn::make('department.name')->label('Reparto')
                     ->searchable()
@@ -74,10 +83,10 @@ class OrdersTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
-                CommentsAction::make()
-                    ->mentionables(User::all())
-            ])
+                CommentsAction::make()->hiddenLabel(true)->tooltip('Commenti')
+                    ->mentionables(User::all()),
+                EditAction::make()->hiddenLabel(true)->tooltip('Modifica')->color('warning'),
+            ])->recordActionsPosition(RecordActionsPosition::BeforeColumns)
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
