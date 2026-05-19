@@ -19,11 +19,9 @@
         "laravel/tinker": "^3.0",
         "livewire/flux": "^2.12.0",
         "livewire/livewire": "^4.1",
-        "lucaciotti/filament-infinite-scroll": "dev-main",
         "maatwebsite/excel": "^3.1",
         "malzariey/filament-daterangepicker-filter": "^5.0",
         "owen-it/laravel-auditing": "^14.0",
-        "relaticle/comments": "^1.0",
         "tomatophp/filament-users": "^5.0",
         "watheqalshowaiter/filament-sticky-table-header": "^1.5"
     },
@@ -118,11 +116,5 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/lucaciotti/filament-infinite-scroll"
-        }
-    ]
+    "prefer-stable": true
 }
