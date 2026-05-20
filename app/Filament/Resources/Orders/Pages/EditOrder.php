@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Orders\Pages;
 
 use App\Filament\Resources\Orders\OrderResource;
+use App\Models\User;
 use Auth;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
@@ -17,7 +18,8 @@ class EditOrder extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            CommentsAction::make(),
+            CommentsAction::make()
+                ->mentionables(User::all()),
             SubscriptionAction::make(),
             // DeleteAction::make(),
         ];

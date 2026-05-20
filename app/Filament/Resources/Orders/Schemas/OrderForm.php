@@ -14,6 +14,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
@@ -23,62 +24,76 @@ class OrderForm
     public static function configure(Schema $schema): Schema
     {
         $form = $schema
+            // ->columns(1)
             ->components([
-                Select::make('state')->label('Stato')
-                    ->options(OrderStatus::class)->hiddenOn('create'),
-                DatePicker::make('date')->required()->label('Data Consegna'),
-                TextInput::make('type_production')->required()->label('Magazzino'),
-                Select::make('customer_id')
-                    ->searchable()
-                    ->preload()
-                    ->relationship('customer', 'description')
-                    ->createOptionForm([
-                        TextInput::make('code')->label('Codice Cliente')
-                            ->required(),
-                        TextInput::make('description')->label('Ragione Sociale'),
-                    ]),
-                Select::make('product_id')->label('Codice Prodotto')
-                    ->required()
-                    ->searchable()
-                    ->preload()
-                    ->relationship('product', 'code')
-                    ->createOptionForm([
-                        TextInput::make('code')->label('Codice Prodotto')
-                            ->required(),
-                        TextInput::make('description')->label('Descrizione Prodotto'),
-                        TextInput::make('unit')->label('UM Principale'),
-                        TextInput::make('unit1')->label('UM 1'),
-                        TextInput::make('unit2')->label('UM 2'),
-                        TextInput::make('unit3')->label('UM 3'),
-                        TextInput::make('fatt1')->label('Fatt.Conv. UM 1')
-                            ->numeric(),
-                        TextInput::make('fatt2')->label('Fatt.Conv. UM 2')
-                            ->numeric(),
-                        TextInput::make('fatt3')->label('Fatt.Conv. UM 3')
-                            ->numeric(),
-                        Select::make('product_range_id')->label('Gamma Prodotto')
-                            ->relationship('productRange', 'code')
+                Fieldset::make('')->columnSpan(2)
+                    ->schema([
+                        Select::make('state')->label('Stato')
+                            ->options(OrderStatus::class)->hiddenOn('create'),
+                        Select::make('department_id')->label('Reparto')
+                            ->required()
                             ->searchable()
                             ->preload()
+                            ->relationship('department', 'name')
+                            ->columnSpan(fn(string $operation) => $operation === 'create' ? 2 : 1),
+                    ]),
+                Fieldset::make('')->columnSpan(2)
+                    ->schema([
+                        Select::make('product_id')->label('Codice Prodotto')
+                            ->required()
+                            ->searchable()
+                            ->preload()
+                            ->relationship('product', 'code')
                             ->createOptionForm([
-                                TextInput::make('name')
-                                    ->required()
-                                    ->maxLength(255),
+                                TextInput::make('code')->label('Codice Prodotto')
+                                    ->required(),
+                                TextInput::make('description')->label('Descrizione Prodotto'),
+                                TextInput::make('unit')->label('UM Principale'),
+                                TextInput::make('unit1')->label('UM 1'),
+                                TextInput::make('unit2')->label('UM 2'),
+                                TextInput::make('unit3')->label('UM 3'),
+                                TextInput::make('fatt1')->label('Fatt.Conv. UM 1')
+                                    ->numeric(),
+                                TextInput::make('fatt2')->label('Fatt.Conv. UM 2')
+                                    ->numeric(),
+                                TextInput::make('fatt3')->label('Fatt.Conv. UM 3')
+                                    ->numeric(),
+                                Select::make('product_range_id')->label('Gamma Prodotto')
+                                    ->relationship('productRange', 'code')
+                                    ->searchable()
+                                    ->preload()
+                                    ->createOptionForm([
+                                        TextInput::make('name')
+                                            ->required()
+                                            ->maxLength(255),
+                                    ]),
+                            ]),
+                        DatePicker::make('date')->required()->label('Data Consegna'),
+                    ]),
+                Fieldset::make('')->columns(fn(string $operation) => $operation === 'create' ? 2 : 3)->columnSpan(2)
+                    ->schema([
+                        TextInput::make('batch_code')->label('Lotto'),
+                        TextInput::make('qty')->label('Qta')
+                            ->required()
+                            ->numeric(),
+                        // TextInput::make('qty_end')->label('Qta Finale')
+                        //     ->numeric(),
+                        TextInput::make('qty_res')->label('Qta Residua')
+                            ->numeric()->hiddenOn('create'),
+                    ]),
+                Fieldset::make('')->columnSpan(2)
+                    ->schema([
+                        TextInput::make('type_production')->required()->label('Magazzino'),
+                        Select::make('customer_id')
+                            ->searchable()
+                            ->preload()
+                            ->relationship('customer', 'description')
+                            ->createOptionForm([
+                                TextInput::make('code')->label('Codice Cliente')
+                                    ->required(),
+                                TextInput::make('description')->label('Ragione Sociale'),
                             ]),
                     ]),
-                TextInput::make('batch_code')->label('Lotto'),
-                TextInput::make('qty')->label('Qta')
-                    ->required()
-                    ->numeric(),
-                // TextInput::make('qty_end')->label('Qta Finale')
-                //     ->numeric(),
-                TextInput::make('qty_res')->label('Qta Residua')
-                    ->numeric()->hiddenOn('create'),
-                Select::make('department_id')->label('Reparto')
-                    ->required()
-                    ->searchable()
-                    ->preload()
-                    ->relationship('department', 'name'),
                 Textarea::make('note')->label('Note')
                     ->columnSpanFull(),
                 Actions::make([

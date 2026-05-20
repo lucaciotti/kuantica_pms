@@ -19,6 +19,7 @@ use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Kirschbaum\Commentions\Filament\Actions\CommentsAction;
 use Kirschbaum\Commentions\Filament\Actions\CommentsTableAction;
+use Kirschbaum\Commentions\Filament\Actions\SubscriptionAction;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class OrdersTable
@@ -112,7 +113,8 @@ class OrdersTable
             ->recordActions([
                 CommentsAction::make()->hiddenLabel(true)->tooltip('Commenti')
                     ->mentionables(User::all()),
-                EditAction::make()->hiddenLabel(true)->tooltip('Modifica')->color('warning'),
+                SubscriptionAction::make()->hiddenLabel(true)->tooltip('Notifiche')->color('warning'),
+                // EditAction::make()->hiddenLabel(true)->tooltip('Modifica')->color('warning'),
             ])->recordActionsPosition(RecordActionsPosition::BeforeColumns)
             ->toolbarActions([
                 BulkActionGroup::make([
