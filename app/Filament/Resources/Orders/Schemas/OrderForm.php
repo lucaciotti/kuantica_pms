@@ -25,25 +25,57 @@ class OrderForm
         $form = $schema
             ->components([
                 Select::make('state')->label('Stato')
-                    ->options(OrderStatus::class),
-                DatePicker::make('date')->label('Data Consegna'),
-                TextInput::make('type_production')->label('Magazzino'),
+                    ->options(OrderStatus::class)->hiddenOn('create'),
+                DatePicker::make('date')->required()->label('Data Consegna'),
+                TextInput::make('type_production')->required()->label('Magazzino'),
                 Select::make('customer_id')
                     ->searchable()
                     ->preload()
-                    ->relationship('customer', 'description'),
+                    ->relationship('customer', 'description')
+                    ->createOptionForm([
+                        TextInput::make('code')->label('Codice Cliente')
+                            ->required(),
+                        TextInput::make('description')->label('Ragione Sociale'),
+                    ]),
                 Select::make('product_id')->label('Codice Prodotto')
+                    ->required()
                     ->searchable()
                     ->preload()
-                    ->relationship('product', 'code'),
+                    ->relationship('product', 'code')
+                    ->createOptionForm([
+                        TextInput::make('code')->label('Codice Prodotto')
+                            ->required(),
+                        TextInput::make('description')->label('Descrizione Prodotto'),
+                        TextInput::make('unit')->label('UM Principale'),
+                        TextInput::make('unit1')->label('UM 1'),
+                        TextInput::make('unit2')->label('UM 2'),
+                        TextInput::make('unit3')->label('UM 3'),
+                        TextInput::make('fatt1')->label('Fatt.Conv. UM 1')
+                            ->numeric(),
+                        TextInput::make('fatt2')->label('Fatt.Conv. UM 2')
+                            ->numeric(),
+                        TextInput::make('fatt3')->label('Fatt.Conv. UM 3')
+                            ->numeric(),
+                        Select::make('product_range_id')->label('Gamma Prodotto')
+                            ->relationship('productRange', 'code')
+                            ->searchable()
+                            ->preload()
+                            ->createOptionForm([
+                                TextInput::make('name')
+                                    ->required()
+                                    ->maxLength(255),
+                            ]),
+                    ]),
                 TextInput::make('batch_code')->label('Lotto'),
                 TextInput::make('qty')->label('Qta')
+                    ->required()
                     ->numeric(),
                 // TextInput::make('qty_end')->label('Qta Finale')
                 //     ->numeric(),
                 TextInput::make('qty_res')->label('Qta Residua')
-                    ->numeric(),
+                    ->numeric()->hiddenOn('create'),
                 Select::make('department_id')->label('Reparto')
+                    ->required()
                     ->searchable()
                     ->preload()
                     ->relationship('department', 'name'),
@@ -66,7 +98,7 @@ class OrderForm
                         ->icon('heroicon-m-x-circle')
                         ->color('warning')
                         ->requiresConfirmation()
-                        ->visible(fn(Get $get) => $get('state') != OrderStatus::QUEUE && $get('state') != OrderStatus::PARTIALED && $get('state') != OrderStatus::SOSPENDED)
+                        ->visible(fn(Get $get) => $get('state') != OrderStatus::QUEUE && $get('state') != OrderStatus::PARTIALED && $get('state') != OrderStatus::SOSPENDED && !$get('state')?->isFinalized())
                         ->schema([
                             Textarea::make('motivo')->label('Motivazione')->required(),
                         ])
@@ -122,7 +154,7 @@ class OrderForm
                                 return redirect(request()->header('Referer'));
                             }
                         }),
-                ])->columnSpan(2)->fullWidth(),
+                ])->columnSpan(2)->fullWidth()->hiddenOn('create'),
             ]);
 
         if (Auth::user() && !Auth::user()->hasRole('admin') && !Auth::user()->hasRole('super_admin')) {

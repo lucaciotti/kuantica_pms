@@ -13,6 +13,7 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Enums\RecordActionsPosition;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
@@ -47,33 +48,30 @@ class OrdersTable
                     ->sortable()
                     ->alignCenter()
                     ->searchable(),
-                TextColumn::make('department.name')->label('Reparto')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: false)
-                    ->sortable(),
+                TextColumn::make('product.code')->label('Codice Prodotto')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('date')->label('Data Consegna')
                     ->date('d/m/Y')
                     ->sortable(),
-                TextColumn::make('type_production')->label('Magazzino')
-                ->sortable()
+                TextColumn::make('batch_code')->label('Lotto')
+                    ->sortable()
                     ->searchable(),
-                TextColumn::make('customer.description')->label('Codice Cliente')
-                ->sortable()
-                    ->searchable(),
-                TextColumn::make('product.code')->label('Codice Prodotto')
-                ->sortable()
-                    ->searchable(),
-            TextColumn::make('batch_code')->label('Lotto')
-                ->sortable()
-                ->searchable(),
                 TextColumn::make('qty')->label('Qta')
                     ->numeric()
                     ->sortable(),
-                // TextColumn::make('qty_end')->label('Qta Finale')
-                //     ->numeric()
-                //     ->sortable(),
                 TextColumn::make('qty_res')->label('Qta Residua')
                     ->numeric()
+                    ->sortable(),
+                TextColumn::make('type_production')->label('Magazzino')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('customer.description')->label('Codice Cliente')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('department.name')->label('Reparto')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -84,10 +82,14 @@ class OrdersTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([                
+            ->filters([
+                Filter::make('notCompleted')->label('Non Completati')
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->where('state', '!=', OrderStatus::ENDED);
+                    })->default(),
                 SelectFilter::make('state')->label('Stato')
-                ->options(OrderStatus::class)
-                ->searchable(),
+                    ->options(OrderStatus::class)
+                    ->searchable(),
                 DateRangeFilter::make('date')->label('Data Consegna'),
                 SelectFilter::make('customer')->label('Clienti')
                     ->relationship('customer', 'description')
