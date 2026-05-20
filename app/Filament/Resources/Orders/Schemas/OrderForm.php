@@ -115,9 +115,12 @@ class OrderForm
                         ->requiresConfirmation()
                         ->visible(fn(Get $get) => $get('state') != OrderStatus::QUEUE && $get('state') != OrderStatus::PARTIALED && $get('state') != OrderStatus::SOSPENDED && !$get('state')?->isFinalized())
                         ->schema([
+                            TextInput::make('quantity')->label('Quantità Lavorata')
+                                ->required()
+                                ->numeric(),
                             Textarea::make('motivo')->label('Motivazione')->required(),
                         ])
-                        ->action(function (array $data, Set $set, Get $get, Order $record) {
+                        ->action(function (array $data, Set $set, Get $get, Order $record, EditRecord $livewire, $action) {
                             if (!empty($data['motivo'])) {
                                 $admins = User::whereHas('roles', function ($query) {
                                     $query->where('name', 'admin')->orWhere('name', 'super_admin');
@@ -127,7 +130,20 @@ class OrderForm
                                 }
                                 $record->comment('ORDINE SOSPESO: ' . $data['motivo'], Auth::user());
                             }
+                            $qtaRes = $get('qty_res') ? $get('qty_res') : $get('qty');
+                            if ($data['quantity'] > $qtaRes) {
+                                Notification::make()
+                                    ->danger()
+                                    ->title('ATTENZIONE!')
+                                    ->body('La Qta finale prodotta non può essere maggiore della Qta Residua.')
+                                    ->send();
+
+                                // 2. Abort the action
+                                $action->cancel();
+                            }
                             $record->state = OrderStatus::SOSPENDED;
+                            $record->qty_end = $data['quantity'];
+                            $record->qty_res = $qtaRes - $data['quantity'];
                             $record->save();
                             return redirect(request()->header('Referer'));
                         }),
@@ -169,7 +185,9 @@ class OrderForm
                                 return redirect(request()->header('Referer'));
                             }
                         }),
-                ])->columnSpan(2)->fullWidth()->hiddenOn('create'),
+                ])->columnSpan(2)->fullWidth()
+                ->hiddenOn('create')
+                ->disabled(fn(Get $get) => Auth::user() && Auth::user()->hasRole('user_readonly')),
             ]);
 
         if (Auth::user() && !Auth::user()->hasRole('admin') && !Auth::user()->hasRole('super_admin')) {
