@@ -13,7 +13,8 @@ class CustomerForm
             ->components([
                 TextInput::make('code')->label('Codice Cliente')
                     ->required(),
-                TextInput::make('description')->label('Ragione Sociale'),
+                TextInput::make('description')->label('Ragione Sociale')
+                    ->required(),
             ]);
     }
 }

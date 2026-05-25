@@ -4,6 +4,7 @@
 @source '../../../../resources/views/filament/**/*';
 
 @source '../../../../vendor/bezhansalleh/filament-panel-switch/resources/views/**/*.blade.php';
+@source '../../../../vendor/gboquizosanchez/filament-log-viewer/resources/views/**/*.blade.php';
 
 .row-group-lvl-1 {
     background-color: var(--color-gray-400);

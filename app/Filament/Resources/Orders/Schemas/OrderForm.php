@@ -84,14 +84,15 @@ class OrderForm
                 Fieldset::make('')->columnSpan(2)
                     ->schema([
                         TextInput::make('type_production')->required()->label('Magazzino'),
-                        Select::make('customer_id')
+                        Select::make('customer_id')->label('Cliente')
                             ->searchable()
                             ->preload()
                             ->relationship('customer', 'description')
                             ->createOptionForm([
                                 TextInput::make('code')->label('Codice Cliente')
                                     ->required(),
-                                TextInput::make('description')->label('Ragione Sociale'),
+                                TextInput::make('description')->label('Ragione Sociale')
+                                    ->required(),
                             ]),
                     ]),
                 Textarea::make('note')->label('Note')
@@ -142,8 +143,8 @@ class OrderForm
                                 $action->cancel();
                             }
                             $record->state = OrderStatus::SOSPENDED;
-                            $record->qty_end = $data['quantity'];
                             $record->qty_res = $qtaRes - $data['quantity'];
+                            $record->qty_end = $get('qty') - $record->qty_res;
                             $record->save();
                             return redirect(request()->header('Referer'));
                         }),
@@ -159,31 +160,32 @@ class OrderForm
                         ])
                         ->action(function (array $data, Set $set, Get $get, Order $record, EditRecord $livewire, $action) {
                             $qtaRes = $get('qty_res') ? $get('qty_res') : $get('qty');
-                            if ($data['quantity'] > $qtaRes) {
-                                Notification::make()
-                                    ->danger()
-                                    ->title('ATTENZIONE!')
-                                    ->body('La Qta finale prodotta non può essere maggiore della Qta Residua.')
-                                    ->send();
+                            // if ($data['quantity'] > $qtaRes) {
+                            //     Notification::make()
+                            //         ->danger()
+                            //         ->title('ATTENZIONE!')
+                            //         ->body('La Qta finale prodotta non può essere maggiore della Qta Residua.')
+                            //         ->send();
 
-                                // 2. Abort the action
-                                $action->cancel();
-                            }
+                            //     // 2. Abort the action
+                            //     $action->cancel();
+                            // }
                             if ($data['quantity'] < $qtaRes) {
                                 $record->state = OrderStatus::PARTIALED;
                                 $record->comment('ORDINE Lavorazione Paziale', Auth::user());
-                                $record->qty_end = $data['quantity'];
-                                $record->qty_res = $qtaRes - $data['quantity'];
-                                $record->save();
-                                return redirect(request()->header('Referer'));
                             } else {
                                 $record->state = OrderStatus::ENDED;
                                 $record->comment('ORDINE Lavorazione Finita', Auth::user());
-                                $record->qty_end = $data['quantity'];
-                                $record->qty_res = $qtaRes - $data['quantity'];
-                                $record->save();
-                                return redirect(request()->header('Referer'));
                             }
+                            if ($data['quantity'] > $qtaRes) {
+                                $record->qty_res = 0;
+                                $record->qty_end = $get('qty') + ($qtaRes - $data['quantity']);
+                            } else {
+                                $record->qty_res = $qtaRes - $data['quantity'];
+                                $record->qty_end = $get('qty') - $record->qty_res;
+                            }
+                            $record->save();
+                            return redirect(request()->header('Referer'));
                         }),
                 ])->columnSpan(2)->fullWidth()
                 ->hiddenOn('create')
